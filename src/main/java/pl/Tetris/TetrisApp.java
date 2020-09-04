@@ -2,17 +2,21 @@ package pl.Tetris;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import pl.Tetris.Shape.ShapeFactory;
 
 public class TetrisApp extends Application {
 
-    private final static int TILE_SIZE = 20;
-    private final static int X_BOARD = 340;
-    private final static int Y_BOARD = 600;
+    public final static int TILE_SIZE = 20;
+    public final static int X_BOARD = 340;
+    public final static int Y_BOARD = 600;
 
     private static Pane board = new Pane();
     private static Scene scene = new Scene(board, X_BOARD + 150, Y_BOARD);
@@ -21,9 +25,19 @@ public class TetrisApp extends Application {
     public void start(Stage stage) throws Exception {
         prepareBoard();
 
+        Canvas canvas = new Canvas(X_BOARD, Y_BOARD);
+        GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
+
+        ShapeFactory.getRandomShape();
+
+        Rectangle r = new Rectangle(TILE_SIZE-1, TILE_SIZE-1);
+
+        board.getChildren().add(r);
+
         stage.setScene(scene);
         stage.setTitle("TETRIS");
         stage.show();
+
 
     }
 
