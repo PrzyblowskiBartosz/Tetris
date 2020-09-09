@@ -1,7 +1,4 @@
-package pl.Tetris.Shape;
-
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+package pl.Tetris.model.shape;
 
 import java.util.ArrayList;
 import java.util.List;

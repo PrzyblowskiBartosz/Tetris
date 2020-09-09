@@ -1,18 +1,33 @@
-package pl.Tetris.service;
+package pl.Tetris.controller;
 
-import pl.Tetris.controller.BoardController;
-import pl.Tetris.model.Block;
+import javafx.stage.Stage;
+import pl.Tetris.service.*;
 
-public class GameService {
+public class GameController {
 
-    private final BoardController boardController;
+    private final BoardService boardService;
+    private GameService gameService;
+    private BlockService blockService;
+    private ControlService controlService;
 
-    public GameService(BoardController boardController) {
-        this.boardController = boardController;
+    public GameController(Stage stage) {
+        this.boardService = new BoardService(stage);
+        createServices();
+        prepareControllers();
+    }
+
+    private void createServices() {
+        CollisionService collisionService = new CollisionService(boardService);
+        this.blockService = new BlockService();
+        this.controlService = new ControlService(collisionService, blockService);
+        this.gameService = new GameService(blockService, boardService, controlService);
+    }
+
+    private void prepareControllers() {
+        UserController userController = new UserController(boardService.getBoard().getScene(), controlService);
     }
 
     public void start(){
-        LogicService logicService = new LogicService();
-        AnimationService animationService = new AnimationService(logicService, boardController);
+        gameService.startTimer();
     }
 }

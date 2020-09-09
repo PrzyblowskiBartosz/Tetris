@@ -1,6 +1,4 @@
-package pl.Tetris.Shape;
-
-import java.util.ArrayList;
+package pl.Tetris.model.shape;
 
 /*
  * STRUCTURE BLOCK

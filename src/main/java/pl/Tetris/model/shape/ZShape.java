@@ -1,4 +1,4 @@
-package pl.Tetris.Shape;
+package pl.Tetris.model.shape;
 
 /*
  * STRUCTURE BLOCK

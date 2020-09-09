@@ -1,10 +1,9 @@
-package pl.Tetris.Services;
+package pl.Tetris.model;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import pl.Tetris.Shape.Shape;
-import pl.Tetris.Shape.ShapeFactory;
-import pl.Tetris.TetrisApp;
+import pl.Tetris.model.shape.Shape;
+import pl.Tetris.model.shape.ShapeFactory;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,18 +11,18 @@ import java.util.stream.Collectors;
 public class Block {
 
     private List<Rectangle> rectangles;
-    private Color color;
+    private final Color color;
+    private int size;
 
-
-    public Block() {
+    public Block(int size) {
         Shape shape = ShapeFactory.getRandomShape();
+        this.size = size;
         this.color = Color.RED;
         this.setRectangles(
                 shape.getStructure().stream()
-                        .map(t -> new Rectangle(t[0] * TetrisApp.TILE_SIZE, t[1] * TetrisApp.TILE_SIZE,TetrisApp.TILE_SIZE-1, TetrisApp.TILE_SIZE-1))
+                        .map(t -> new Rectangle(t[0] * size, t[1] * size,size-1, size-1))
                         .collect(Collectors.toList()));
         this.rectangles.forEach(r -> r.setFill(color));
-
     }
 
     public List<Rectangle> getStructure() {
@@ -32,6 +31,10 @@ public class Block {
 
     private void setRectangles(List<Rectangle> rectangles) {
         this.rectangles = rectangles;
+    }
+
+    public int getSize() {
+        return size;
     }
 }
 
