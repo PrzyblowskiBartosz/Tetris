@@ -1,26 +1,25 @@
 package pl.Tetris.service;
 
-import javafx.scene.shape.Rectangle;
 import pl.Tetris.model.Block;
 import pl.Tetris.model.Board;
-import pl.Tetris.model.Direction;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BlockService {
 
+    private static final BlockService INSTANCE = new BlockService();
+
     private Block activeBlock;
     private  List<Block> blockList = new ArrayList<>();
 
-    public BlockService() {
-    }
+    private BlockService() {}
 
     public void setActiveBlock(Block activeBlock) {
         this.activeBlock = activeBlock;
     }
 
-    public void addBlock(Block block) {
+    public void addBlockToBlockList(Block block) {
         if (block != null)
             this.blockList.add(block);
     }
@@ -35,12 +34,11 @@ public class BlockService {
 
     public Block createNewBlock() {
         Block newBlock = new Block(Board.TILE);
-        addBlock(newBlock);
-        setActiveBlock(newBlock);
+        addBlockToBlockList(newBlock);
         return newBlock;
     }
 
-    private void checkBlockState() {
-
+    public static BlockService getInstance() {
+        return INSTANCE;
     }
 }

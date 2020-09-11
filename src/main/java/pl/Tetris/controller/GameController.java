@@ -5,26 +5,27 @@ import pl.Tetris.service.*;
 
 public class GameController {
 
-    private final BoardService boardService;
-    private GameService gameService;
-    private BlockService blockService;
-    private ControlService controlService;
+    private BoardService boardService = BoardService.getInstance();
+    private CollisionService collisionService = CollisionService.getInstance();
+    private GameService gameService = GameService.getInstance();
 
     public GameController(Stage stage) {
-        this.boardService = new BoardService(stage);
-        createServices();
-        prepareControllers();
+        prepareGame(stage);
     }
 
-    private void createServices() {
-        CollisionService collisionService = new CollisionService(boardService);
-        this.blockService = new BlockService();
-        this.controlService = new ControlService(collisionService, blockService);
-        this.gameService = new GameService(blockService, boardService, controlService);
+    private void prepareGame(Stage stage) {
+        boardService.setStage(stage);
+        setServices();
+        setUserController();
     }
 
-    private void prepareControllers() {
-        UserController userController = new UserController(boardService.getBoard().getScene(), controlService);
+    private void setServices() {
+        boardService.prepareBoard();
+        collisionService.setBoardService(boardService);
+    }
+
+    private void setUserController() {
+        UserController.getInstance().connectScene(boardService.getBoard().getScene());
     }
 
     public void start(){

@@ -5,9 +5,13 @@ import pl.Tetris.model.Block;
 
 public class CollisionService {
 
+    private static final CollisionService INSTANCE = new CollisionService();
+
     private BoardService boardService;
 
-    public CollisionService(BoardService boardService) {
+    private CollisionService() {}
+
+    public void setBoardService(BoardService boardService) {
         this.boardService = boardService;
     }
 
@@ -21,5 +25,9 @@ public class CollisionService {
                 return true;
 
         return false;
+    }
+
+    public static CollisionService getInstance() {
+        return INSTANCE;
     }
 }

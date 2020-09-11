@@ -9,29 +9,25 @@ import pl.Tetris.model.Board;
 
 public class BoardService {
 
-    private final Stage stage;
-    private GraphicsContext graphicsContext;
+    private static final BoardService INSTANCE = new BoardService();
 
+    private Stage stage;
+    private GraphicsContext graphicsContext;
     private Board board;
 
-    public BoardService(Stage stage) {
-        this.stage = stage;
-        setUp();
-    }
+    private BoardService() {}
 
-    public Board getBoard() {
-        return board;
-    }
-
-    private void setUp() {
+    public void prepareBoard() {
         setBoard(buildBoard());
-
-        Canvas canvas = new Canvas(board.getX(), board.getY());
-        this.graphicsContext = canvas.getGraphicsContext2D();
+        setGraphicContext(new Canvas(board.getX(), board.getY()));
 
         stage.setScene(board.getScene());
         stage.setTitle("TETRIS");
         stage.show();
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
     }
 
     private Board buildBoard() {
@@ -44,20 +40,32 @@ public class BoardService {
          return newBoard;
     }
 
-    public boolean checkTile(int x, int y) {
-        return board.getMesh().isTileFree(x,y);
+    private void setGraphicContext(Canvas canvas) {
+        this.graphicsContext = canvas.getGraphicsContext2D();
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public Board getBoard() {
+        return board;
     }
 
     public GraphicsContext getGraphicsContext() {
         return graphicsContext;
     }
 
-    public void setBoard(Board board) {
-        this.board = board;
+    public boolean checkTile(int x, int y) {
+        return board.getMesh().isTileFree(x,y);
     }
 
     public void addBlock(Block block){
-        this.board.getPane().getChildren().addAll(block.getStructure());
+        board.getPane().getChildren().addAll(block.getStructure());
+    }
+
+    public static BoardService getInstance() {
+        return INSTANCE;
     }
 }
 

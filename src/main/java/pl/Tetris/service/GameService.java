@@ -3,19 +3,18 @@ package pl.Tetris.service;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
 import pl.Tetris.model.Block;
-import pl.Tetris.model.Board;
 import pl.Tetris.model.Direction;
 
 public class GameService {
 
-    private final BlockService blockService;
-    private final BoardService boardService;
-    private final ControlService controlService;
+    private static final GameService INSTANCE = new GameService();
 
-    public GameService(BlockService blockService, BoardService boardService, ControlService controlService) {
-        this.blockService = blockService;
-        this.boardService = boardService;
-        this.controlService = controlService;
+    private final BlockService blockService = BlockService.getInstance();
+    private final ControlService controlService = ControlService.getInstance();
+    private final BoardService boardService = BoardService.getInstance();
+    private final CollisionService collisionService = CollisionService.getInstance();
+
+    private GameService() {
     }
 
     public void startTimer() {
@@ -41,14 +40,27 @@ public class GameService {
     }
 
     private void setFrame(GraphicsContext context) {
-        if (blockService.getActiveBlock() == null)
-            boardService.addBlock(blockService.createNewBlock());
-
-        fallBlock();
+        Block activeBlock = blockService.getActiveBlock();
+        if (activeBlock == null) {
+            Block newBlock = blockService.createNewBlock();
+            boardService.addBlock(newBlock);
+            blockService.setActiveBlock(newBlock);
+        }
+        checkPosition(activeBlock);
+        fallBlocks();
     }
 
-    private void fallBlock() {
+    private void fallBlocks() {
         for (Block block : blockService.getBlockList())
             controlService.moveBlock(block, Direction.DOWN);
+    }
+
+    private void checkPosition(Block block) {
+        if (collisionService.isAtTheBottom(block))
+            blockService.setActiveBlock(null);
+    }
+
+    public static GameService getInstance() {
+        return INSTANCE;
     }
 }

@@ -5,12 +5,21 @@ import javafx.scene.input.KeyEvent;
 import pl.Tetris.model.Direction;
 import pl.Tetris.service.ControlService;
 
+import java.util.ResourceBundle;
+
 public class UserController {
 
-    private final ControlService controlService;
+    private final static UserController INSTANCE = new UserController();
+    private final ControlService controlService = ControlService.getInstance();
 
-    public UserController(Scene scene, ControlService controlService) {
-        this.controlService = controlService;
+    private UserController() {
+    }
+
+    public static UserController getInstance() {
+        return INSTANCE;
+    }
+
+    public void connectScene(Scene scene) {
         setWSADController(scene);
     }
 

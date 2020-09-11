@@ -8,12 +8,13 @@ import java.util.List;
 
 public class ControlService {
 
-    private BlockService blockService;
-    private final CollisionService collisionService;
+    private static final ControlService INSTANCE = new ControlService();
 
-    public ControlService(CollisionService collisionService, BlockService blockService) {
-        this.blockService = blockService;
-        this.collisionService = collisionService;
+    private BlockService blockService = BlockService.getInstance();
+    private CollisionService collisionService = CollisionService.getInstance();
+
+    private ControlService() {
+
     }
 
     public void moveBlock(Direction dir) {
@@ -32,8 +33,6 @@ public class ControlService {
 
         if (isMoveAvailable(block, dir))
             move(block, dir);
-
-        checkPosition(block);
     }
 
     private boolean isMoveAvailable(Block block, Direction dir) {
@@ -74,11 +73,6 @@ public class ControlService {
         block.getStructure().forEach(r -> r.setY(r.getY() + block.getSize()));
     }
 
-    private void checkPosition(Block block) {
-        if (collisionService.isAtTheBottom(block))
-
-    }
-
     public void rotateActiveBlock(){
         Block activeBlock = blockService.getActiveBlock();
 
@@ -114,7 +108,6 @@ public class ControlService {
 
         return true;
     }
-
     private void rotate(Block block) {
         List<Rectangle> structure = block.getStructure();
 
@@ -129,5 +122,9 @@ public class ControlService {
 
         rectangle.setX(rX);
         rectangle.setY(rY);
+    }
+
+    public static ControlService getInstance() {
+        return INSTANCE;
     }
 }
