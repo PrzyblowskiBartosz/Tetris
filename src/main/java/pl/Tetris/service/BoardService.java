@@ -2,6 +2,7 @@ package pl.Tetris.service;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import pl.Tetris.model.Block;
 import pl.Tetris.model.Board;
@@ -58,6 +59,11 @@ public class BoardService {
 
     public boolean checkTile(int x, int y) {
         return board.getMesh().isTileFree(x,y);
+    }
+
+    public void lockTile(Rectangle rectangle) {
+        if (rectangle != null)
+            board.getMesh().lockMesh((int) rectangle.getY()/Board.TILE, (int) rectangle.getX()/Board.TILE);
     }
 
     public void addBlock(Block block){

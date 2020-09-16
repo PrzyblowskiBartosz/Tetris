@@ -3,6 +3,7 @@ package pl.Tetris.model;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class MeshBoard {
 
@@ -18,9 +19,19 @@ public class MeshBoard {
                 mesh.put(new Coords(i,j), true);
     }
 
+/*    public Map<Coords, Boolean> getTilesByY(int y) {
+        return mesh.entrySet().stream()
+                .filter(c -> y == c.getKey().y)
+                .map(Map.Entry::getKey)
+    }*/
+
     public boolean isTileFree(int x, int y) {
         Boolean isFree = mesh.get(new Coords(x,y));
         return isFree == null ? false : isFree;
+    }
+
+    public void lockMesh(int x, int y) {
+        mesh.put(new Coords(x,y), false);
     }
 
     static class Coords {

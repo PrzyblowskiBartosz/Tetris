@@ -1,5 +1,6 @@
 package pl.Tetris.service;
 
+import javafx.scene.shape.Rectangle;
 import pl.Tetris.model.Block;
 import pl.Tetris.model.Board;
 
@@ -36,6 +37,15 @@ public class BlockService {
         Block newBlock = new Block(Board.TILE);
         addBlockToBlockList(newBlock);
         return newBlock;
+    }
+
+    public void stopBlock(Block block) {
+        if (block != null)
+            lockTiles(block);
+    }
+
+    private void lockTiles(Block block) {
+        block.getStructure().forEach(r -> BoardService.getInstance().lockTile(r));
     }
 
     public static BlockService getInstance() {

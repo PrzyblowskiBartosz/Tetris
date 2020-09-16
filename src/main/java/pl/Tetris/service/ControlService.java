@@ -23,22 +23,18 @@ public class ControlService {
         if (activeBlock == null)
             return;
 
-        if (isMoveAvailable(activeBlock, dir))
-            move(activeBlock, dir);
+        moveBlock(activeBlock, dir);
     }
 
     public void moveBlock(Block block, Direction dir) {
-        if (block == null)
-            return;
-
         if (isMoveAvailable(block, dir))
-            move(block, dir);
+            dir.move(block);
     }
 
     private boolean isMoveAvailable(Block block, Direction dir) {
         for (Rectangle r : block.getStructure()) {
-            int x = (int) r.getX()/block.getSize();
-            int y = (int) r.getY()/block.getSize();
+            int x = (int) r.getX() / block.getSize();
+            int y = (int) r.getY() / block.getSize();
 
             switch (dir) {
                 case RIGHT -> x++;
@@ -46,31 +42,11 @@ public class ControlService {
                 case DOWN -> y++;
             }
 
-            if(collisionService.isCollision(x, y))
+            if (collisionService.isCollision((int) r.getX() / block.getSize(), (int) r.getY() / block.getSize()))
                 return false;
-        }
 
+        }
         return true;
-    }
-
-    private void move(Block block, Direction dir) {
-        switch (dir) {
-            case RIGHT -> moveBlockRight(block);
-            case DOWN -> moveBlockDown(block);
-            case LEFT -> moveBlockLeft(block);
-        }
-    }
-
-    private void moveBlockRight(Block block) {
-        block.getStructure().forEach(r -> r.setX(r.getX() + block.getSize()));
-    }
-
-    private void moveBlockLeft(Block block) {
-        block.getStructure().forEach(r -> r.setX(r.getX() - block.getSize()));
-    }
-
-    private void moveBlockDown(Block block) {
-        block.getStructure().forEach(r -> r.setY(r.getY() + block.getSize()));
     }
 
     public void rotateActiveBlock(){

@@ -21,7 +21,7 @@ public class CollisionService {
 
     public boolean isAtTheBottom(Block block) {
         for (Rectangle r : block.getStructure())
-            if ((int) r.getY()/block.getSize() == (boardService.getBoard().getY()-1))
+            if ((int) r.getY()/block.getSize() == boardService.getBoard().getY())
                 return true;
 
         return false;

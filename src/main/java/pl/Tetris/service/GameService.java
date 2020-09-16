@@ -28,36 +28,43 @@ public class GameService {
             public void handle(long now) {
                 if (lastTick == 0) {
                     lastTick = now;
-                    setFrame(context);
+                    runGame(context);
                     return;
                 }
                 if (now - lastTick > 1000000000) {
                     lastTick = now;
-                    setFrame(context);
+                    runGame(context);
                 }
             }
         }.start();
     }
 
-    private void setFrame(GraphicsContext context) {
-        Block activeBlock = blockService.getActiveBlock();
-        if (activeBlock == null) {
-            Block newBlock = blockService.createNewBlock();
-            boardService.addBlock(newBlock);
-            blockService.setActiveBlock(newBlock);
-        }
-        checkPosition(activeBlock);
+    private void runGame(GraphicsContext context) {
+
+        if (blockService.getActiveBlock() == null)
+            generateBlock();
+
+        checkPosition(blockService.getActiveBlock());
+
         fallBlocks();
+    }
+
+    private void generateBlock() {
+        Block newBlock = blockService.createNewBlock();
+        boardService.addBlock(newBlock);
+        blockService.setActiveBlock(newBlock);
+    }
+
+    private void checkPosition(Block block) {
+        if (collisionService.isAtTheBottom(block)){
+            blockService.stopBlock(block);
+            blockService.setActiveBlock(null);
+        }
     }
 
     private void fallBlocks() {
         for (Block block : blockService.getBlockList())
             controlService.moveBlock(block, Direction.DOWN);
-    }
-
-    private void checkPosition(Block block) {
-        if (collisionService.isAtTheBottom(block))
-            blockService.setActiveBlock(null);
     }
 
     public static GameService getInstance() {

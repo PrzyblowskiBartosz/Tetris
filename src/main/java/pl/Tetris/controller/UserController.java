@@ -24,8 +24,7 @@ public class UserController {
     }
 
     private void setWSADController(Scene scene) {
-        scene.addEventFilter(KeyEvent.KEY_PRESSED, key->{
-
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
             switch (key.getCode()) {
                 case RIGHT -> controlService.moveBlock(Direction.RIGHT);
                 case LEFT -> controlService.moveBlock(Direction.LEFT);
